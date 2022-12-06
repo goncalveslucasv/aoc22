@@ -11,19 +11,19 @@ import (
 func main() {
 	content, err := os.ReadFile("./input/input.txt")
 	if err != nil {
-		fmt.Printf("error %s", err)
+		panic("invalid input!")
 	}
 
-	counter := sortDescending(countCalories(parseElves(parseInput(content))))
+	elvesCalories := sortDescending(countCalories(parseElves(parseInput(content))))
 
-	fmt.Println(counter[0])
-	fmt.Println(sum(counter[0:3]))
+	fmt.Println(elvesCalories[0])
+	fmt.Println(sum(elvesCalories[0:3]))
 }
 
 func parseElves(input []string) map[int][]string {
 	elves := map[int][]string{}
-	for k, v := range input {
-		elves[k] = strings.Split(string(v), "\n")
+	for key, elf := range input {
+		elves[key] = strings.Split(string(elf), "\n")
 	}
 
 	return elves
@@ -35,13 +35,13 @@ func parseInput(content []byte) []string {
 
 func countCalories(content map[int][]string) []int {
 	var calories []int
-	for _, v := range content {
-		var value int = 0
-		for _, t := range v {
-			a, _ := strconv.Atoi(t)
-			value = value + a
+	for _, elfCalories := range content {
+		var totalCalories = 0
+		for _, itemCalories := range elfCalories {
+			itemCaloriesToSum, _ := strconv.Atoi(itemCalories)
+			totalCalories = totalCalories + itemCaloriesToSum
 		}
-		calories = append(calories, value)
+		calories = append(calories, totalCalories)
 	}
 
 	return calories
